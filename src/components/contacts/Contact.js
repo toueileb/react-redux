@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './Contact.css';
 import PropTypes from 'prop-types';
 import { Consumer } from '../context';
+import axios from 'axios';
 
 class Contact extends Component {
 
@@ -14,11 +15,34 @@ class Contact extends Component {
         this.setState({showContactToggle: !this.state.showContactToggle});
     }
 
-   onDeleteClick = (id, dispatch) => {
-        dispatch({
-            type: 'DELETE_CONTACT',
-            payload: id
-        });
+   /*onDeleteClick = (id, dispatch) => {
+        axios.delete('https://jsonplaceholder.typicode.com/users/' + id)
+            .then(res => {
+                dispatch({
+                    type: 'DELETE_CONTACT',
+                    payload: id
+                });
+            })
+            .catch(err => console.error(err));
+
+
+
+    }*/
+
+    onDeleteClick = async (id, dispatch) => {
+
+        try {
+            const res = await axios.delete('https://jsonplaceholder.typicode.com/users/' + id);
+            dispatch({
+                type: 'DELETE_CONTACT',
+                payload: id
+            });
+        }catch (e) {
+            console.log(e);
+        }
+
+
+
 
 
     }
