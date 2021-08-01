@@ -1,15 +1,32 @@
 import React, { Component } from 'react';
 import TextInputGroup from '../layout/TextInputGroup';
+
 import { connect } from 'react-redux';
-import {addContact} from '../../actions/contactActions';
-import uuid from 'uuid';
-class AddContact extends Component {
+
+import { getContact } from '../../actions/contactActions';
+
+import { updateContact } from '../../actions/contactActions';
+
+class EditContact extends Component {
   state = {
     name: '',
     email: '',
     phone: '',
     errors: {}
   };
+
+  componentDidMount() {
+
+    const { id } = this.props.match.params;
+    this.props.getContact(id);
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+
+    const { name, email, phone } = nextProps.contact;
+
+    this.setState({name,email,phone});
+  }
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -32,14 +49,19 @@ class AddContact extends Component {
       return;
     }
 
-    const newContact = {
+
+
+
+    //// UPDATE CONTACT ////
+    const { id } = this.props.match.params;
+
+
+    const updContact = {
+      id,
       name,
       email,
       phone
     };
-
-    //// SUBMIT CONTACT ////
-    this.props.addContact(newContact);
 
     // Clear State
     this.setState({
@@ -48,6 +70,8 @@ class AddContact extends Component {
       phone: '',
       errors: {}
     });
+
+    this.props.updateContact(updContact);
 
     this.props.history.push('/');
   };
@@ -59,7 +83,7 @@ class AddContact extends Component {
 
     return (
       <div className="card mb-3">
-        <div className="card-header">Add Contact</div>
+        <div className="card-header">Edit Contact</div>
         <div className="card-body">
           <form onSubmit={this.onSubmit}>
             <TextInputGroup
@@ -89,7 +113,7 @@ class AddContact extends Component {
             />
             <input
               type="submit"
-              value="Add Contact"
+              value="Update Contact"
               className="btn btn-light btn-block"
             />
           </form>
@@ -99,4 +123,10 @@ class AddContact extends Component {
   }
 }
 
-export default connect(null,{addContact})(AddContact);
+const mapStateToProps = (state) => {
+  return {
+    contact: state.myContact.contact
+  };
+};
+
+export default connect(mapStateToProps,{getContact, updateContact})(EditContact);

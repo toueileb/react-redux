@@ -1,18 +1,11 @@
 import React from 'react';
 
-function About(props) {
-    return (
-        <div>
-            <h2>
-                {/*<h5>{props.match.params.id}</h5>
-                <h5>{props.match.params.name}</h5>*/}
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aliquid dolores facilis harum
-                    magni necessitatibus numquam praesentium qui repudiandae, sapiente!
-                </p>
-            </h2>
-        </div>
-    );
-}
-
-export default About;
+export default () => {
+  return (
+    <div>
+      <h1 className="display-4">About Contact Manager</h1>
+      <p className="lead">Simple app to manage contacts</p>
+      <p className="text-secondary">Version 1.0.0</p>
+    </div>
+  );
+};
